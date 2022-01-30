@@ -1,0 +1,26 @@
+package com.juno.jayeon.controller;
+
+import com.juno.jayeon.domain.dto.OrderDto;
+import com.juno.jayeon.domain.dto.OrderResponseDto;
+import com.juno.jayeon.domain.dto.api.CommonV1;
+import com.juno.jayeon.service.OrderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(value = "/v1/orders")
+public class OrderController {
+    private final OrderService orderService;
+
+    @PostMapping("")
+    public ResponseEntity<CommonV1> putOrders(@RequestBody OrderDto orderDto) throws Exception{
+        OrderResponseDto ord = orderService.save(orderDto);
+        CommonV1 body = new CommonV1("200", "정상", ord);
+        return ResponseEntity.ok().body(body);
+    }
+}
