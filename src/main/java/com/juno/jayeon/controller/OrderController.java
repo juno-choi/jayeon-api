@@ -6,14 +6,12 @@ import com.juno.jayeon.domain.dto.api.CommonV1;
 import com.juno.jayeon.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/orders")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrderController {
     private final OrderService orderService;
 

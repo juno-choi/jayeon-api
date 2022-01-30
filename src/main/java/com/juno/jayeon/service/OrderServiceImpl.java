@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +29,18 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public OrderResponseDto save(OrderDto orderDto) throws Exception {
         JsonParser parser = new JsonParser();
-        String jsonStr = orderDto.getJson();
+        String jsonStr = orderDto.getOrder();
         JsonElement parse = parser.parse(jsonStr);
         JsonArray jsonArray = parse.getAsJsonArray();
         for (JsonElement jsonElement : jsonArray) {
-            System.out.println("jsonElement = " + jsonElement);
-            JsonElement item = jsonElement.getAsJsonObject().get("item");
-            System.out.println("item = " + item);
+            Map<String, Object> map = new HashMap<>();
+            Gson gson = new Gson();
+            map = gson.fromJson(jsonElement, map.getClass());
+            System.out.println("map = " + map.toString());
+            System.out.println("item idx = " + map.get("item"));
         }
-
-        return null;
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setOrder_idx(1L);
+        return orderResponseDto;
     }
 }

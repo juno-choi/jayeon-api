@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class OrderDto {
     //상품 정보
-    private String json;
+    private String order;
     
     //주문자 정보
     private String buyer;
