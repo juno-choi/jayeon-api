@@ -22,9 +22,11 @@ public class GetOrderDto {
     private String post3;
     private String request;
     private String status;
+    private String regDate;
+    private Long price;
 
     @Builder
-    public GetOrderDto(Long idx, List<GetOrderItemDto> itemList, String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, String status) {
+    public GetOrderDto(Long idx, List<GetOrderItemDto> itemList, String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, String status, String regDate, Long price) {
         this.idx = idx;
         this.itemList = itemList;
         this.buyer = buyer;
@@ -37,5 +39,7 @@ public class GetOrderDto {
         this.post3 = post3;
         this.request = request;
         this.status = status;
+        this.regDate = regDate;
+        this.price = price;
     }
 }

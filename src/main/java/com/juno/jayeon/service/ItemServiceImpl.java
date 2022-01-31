@@ -29,6 +29,7 @@ public class ItemServiceImpl implements ItemService {
             for (ItemOption o : options) {
                 GetItemOptionDto getItemOptionDto = GetItemOptionDto.builder()
                         .idx(o.getIdx())
+                        .kg(o.getKg())
                         .name(o.getName())
                         .price(o.getPrice())
                         .build();

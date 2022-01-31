@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 public class Item {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_idx")
     private Long idx;
 

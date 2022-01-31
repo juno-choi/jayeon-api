@@ -30,15 +30,6 @@ class JayeonApplicationTests {
 
 	@Test
 	void itemPrint() throws Exception{
-		List<Order> all = orderService.findAll();
-		for (Order order : all) {
-			System.out.println("order.getIdx() = " + order.getIdx());
-			List<OrderItem> itemList = order.getItemList();
-			for (OrderItem orderItem : itemList) {
-				System.out.println("orderItem.getItem() = " + orderItem.getItem());
-				System.out.println("orderIte = " + orderItem.getOption());
-			}
-		}
 	}
 
 	@Test

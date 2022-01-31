@@ -13,12 +13,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class OrderItem {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_idx")
     private Long idx;
 
-    private String item;
-    private String option;
+    private Long item;
+    private Long option;
     private int ea;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,7 +26,7 @@ public class OrderItem {
     private Order order;
 
     @Builder
-    public OrderItem(String item, String option, int ea, Order order) {
+    public OrderItem(Long item, Long option, int ea, Order order) {
         this.item = item;
         this.option = option;
         this.ea = ea;
