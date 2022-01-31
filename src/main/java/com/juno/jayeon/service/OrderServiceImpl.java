@@ -14,6 +14,7 @@ import com.juno.jayeon.repository.ItemRepository;
 import com.juno.jayeon.repository.OrderItemRepository;
 import com.juno.jayeon.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +32,9 @@ public class OrderServiceImpl implements OrderService{
     private final ItemRepository itemRepository;
     private final ItemOptionRepository itemOptionRepository;
 
-
     @Override
     public List<GetOrderDto> findAll() throws Exception {
-        List<Order> orders = orderRepository.findAll();
+        List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC, "idx"));
         List<GetOrderDto> ordersList = new ArrayList<>();
 
         for (Order order : orders) {
