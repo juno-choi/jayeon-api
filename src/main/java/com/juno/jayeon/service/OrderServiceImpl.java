@@ -52,16 +52,16 @@ public class OrderServiceImpl implements OrderService{
                 Optional<ItemOption> itemOptionOptional = itemOptionRepository.findById(orderItem.getOption());
                 ItemOption itemOption = itemOptionOptional.get();
                 String optionName = itemOption.getName();
+                int kg = itemOption.getKg();
                 long optionPrice = itemOption.getPrice();
-
                 long ea = orderItem.getEa();
-
                 price += (itemPrice*ea) + (optionPrice*ea);
 
                 GetOrderItemDto goid = GetOrderItemDto.builder()
                         .idx(orderItem.getIdx())
                         .item(itemName)
                         .option(optionName)
+                        .kg(kg)
                         .ea((int)ea)
                         .build();
                 orderItemList.add(goid);
