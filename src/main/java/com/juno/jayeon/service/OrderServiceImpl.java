@@ -56,6 +56,7 @@ public class OrderServiceImpl implements OrderService{
                 long optionPrice = itemOption.getPrice();
                 long ea = orderItem.getEa();
                 price += (itemPrice*ea) + (optionPrice*ea);
+                long itemOptionPrice = itemPrice + optionPrice;
 
                 GetOrderItemDto goid = GetOrderItemDto.builder()
                         .idx(orderItem.getIdx())
@@ -63,6 +64,7 @@ public class OrderServiceImpl implements OrderService{
                         .option(optionName)
                         .kg(kg)
                         .ea((int)ea)
+                        .price(itemOptionPrice)
                         .build();
                 orderItemList.add(goid);
             }
