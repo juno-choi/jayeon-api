@@ -71,7 +71,8 @@ public class OrderServiceImpl implements OrderService{
             String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             Map<String, Object> map = new HashMap<>();
             map.put("100", "입금전");
-            map.put("200", "결제완료");
+            map.put("200", "입금확인");
+            map.put("300", "배송출발");
             map.put("900", "배송완료");
             String status = map.get(order.getStatus()).toString();
             GetOrderDto god = GetOrderDto.builder()
