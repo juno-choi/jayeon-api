@@ -1,5 +1,6 @@
 package com.juno.jayeon;
 
+import com.juno.jayeon.domain.dto.GetItemsDto;
 import com.juno.jayeon.domain.entity.Item;
 import com.juno.jayeon.domain.entity.ItemOption;
 import com.juno.jayeon.domain.entity.Order;
@@ -29,13 +30,13 @@ class JayeonApplicationTests {
 
 	@Test
 	void itemPrint() throws Exception{
-		List<Order> all = orderService.findAll();
-		for (Order order : all) {
-			System.out.println("order.getIdx() = " + order.getIdx());
-			List<OrderItem> itemList = order.getItemList();
-			for (OrderItem orderItem : itemList) {
-				System.out.println("orderItem.getName() = " + orderItem.getName());
-			}
+	}
+
+	@Test
+	void orderPrint() throws Exception{
+		List<GetItemsDto> all = itemService.findAll();
+		for (GetItemsDto getItemsDto : all) {
+			System.out.println("getItemsDto = " + getItemsDto.getName());
 		}
 	}
 }

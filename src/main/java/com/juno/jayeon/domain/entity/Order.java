@@ -1,8 +1,10 @@
 package com.juno.jayeon.domain.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_idx")
     private Long idx;
 
@@ -30,5 +32,23 @@ public class Order {
     private String post1;
     private String post2;
     private String post3;
+    private String status;
     private String request;
+    @Column(name = "reg_date")
+    private String regDate;
+
+    @Builder
+    public Order(String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, String status, String regDate) {
+        this.buyer = buyer;
+        this.recipient = recipient;
+        this.tel1 = tel1;
+        this.tel2 = tel2;
+        this.tel3 = tel3;
+        this.post1 = post1;
+        this.post2 = post2;
+        this.post3 = post3;
+        this.request = request;
+        this.status = status;
+        this.regDate = regDate;
+    }
 }

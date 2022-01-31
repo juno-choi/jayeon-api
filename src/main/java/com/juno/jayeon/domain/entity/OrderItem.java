@@ -1,6 +1,7 @@
 package com.juno.jayeon.domain.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,18 +13,23 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class OrderItem {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_idx")
     private Long idx;
+
+    private Long item;
+    private Long option;
+    private int ea;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_idx")
     private Order order;
 
-    private String name;
-    @Column(name = "item_price")
-    private Long itemPrice;
-    private String option;
-    @Column(name = "option_price")
-    private Long optionPrice;
+    @Builder
+    public OrderItem(Long item, Long option, int ea, Order order) {
+        this.item = item;
+        this.option = option;
+        this.ea = ea;
+        this.order = order;
+    }
 }
