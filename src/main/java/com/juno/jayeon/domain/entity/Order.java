@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class Order {
     private String post1;
     private String post2;
     private String post3;
+    @ColumnDefault("100")
+    private String status;
     private String request;
 
     @Builder

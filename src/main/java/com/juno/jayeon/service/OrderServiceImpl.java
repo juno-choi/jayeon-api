@@ -57,6 +57,7 @@ public class OrderServiceImpl implements OrderService{
                     .post2(order.getPost2())
                     .post3(order.getPost3())
                     .request(order.getRequest())
+                    .status(order.getStatus())
                     .build();
 
             ordersList.add(god);
