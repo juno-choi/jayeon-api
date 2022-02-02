@@ -1,9 +1,14 @@
 package com.juno.jayeon.domain.dto;
 
+import com.juno.jayeon.domain.entity.OrderStatus;
 import lombok.Data;
 
 @Data
 public class OrderDto {
+
+    private long idx;
+    private OrderStatus orderStatus;
+
     //상품 정보
     private String order;
     

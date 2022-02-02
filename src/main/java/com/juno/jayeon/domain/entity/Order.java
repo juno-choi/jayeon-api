@@ -21,7 +21,7 @@ public class Order {
     @Column(name = "order_idx")
     private Long idx;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> itemList = new ArrayList<>();
 
     private String buyer;

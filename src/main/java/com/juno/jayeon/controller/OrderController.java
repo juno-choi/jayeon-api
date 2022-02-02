@@ -3,9 +3,7 @@ package com.juno.jayeon.controller;
 import com.juno.jayeon.domain.dto.GetOrderDto;
 import com.juno.jayeon.domain.dto.OrderDto;
 import com.juno.jayeon.domain.dto.OrderResponseDto;
-import com.juno.jayeon.domain.dto.PutOrderDto;
 import com.juno.jayeon.domain.dto.api.CommonV1;
-import com.juno.jayeon.domain.entity.Order;
 import com.juno.jayeon.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +33,16 @@ public class OrderController {
     }
 
     @PutMapping("/status")
-    public ResponseEntity<CommonV1> putOrdersStatus(@RequestBody PutOrderDto putOrderDto) throws Exception{
-        OrderResponseDto update = orderService.update(putOrderDto);
+    public ResponseEntity<CommonV1> putOrdersStatus(@RequestBody OrderDto orderDto) throws Exception{
+        OrderResponseDto update = orderService.update(orderDto);
         CommonV1 body = new CommonV1("200", "정상", update);
+        return ResponseEntity.ok(body);
+    }
+
+    @DeleteMapping("/{idx}")
+    public ResponseEntity<CommonV1> deleteOrder(@PathVariable(value = "idx") Long idx) throws Exception{
+        OrderResponseDto delete = orderService.delete(idx);
+        CommonV1 body = new CommonV1("code", "정상", delete);
         return ResponseEntity.ok(body);
     }
 }

@@ -143,10 +143,10 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     @Transactional
-    public OrderResponseDto update(PutOrderDto putOrderDto) throws Exception{
+    public OrderResponseDto update(OrderDto orderDto) throws Exception{
         OrderResponseDto ord = new OrderResponseDto();
-        long idx = putOrderDto.getIdx();
-        OrderStatus orderStatus = putOrderDto.getOrderStatus();
+        long idx = orderDto.getIdx();
+        OrderStatus orderStatus = orderDto.getOrderStatus();
         OrderStatus afterOrderStatus = null;
         if(orderStatus == OrderStatus.BEFORE){
             afterOrderStatus = OrderStatus.DEPOSIT;
@@ -159,5 +159,14 @@ public class OrderServiceImpl implements OrderService{
 
         ord.setOrder_idx(idx);
         return ord;
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDto delete(Long idx) throws Exception{
+        orderRepository.deleteById(idx);
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setOrder_idx(idx);
+        return orderResponseDto;
     }
 }
