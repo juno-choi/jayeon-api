@@ -16,11 +16,21 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-
-  h2:
-    console:
-      enabled: true
   config:
     activate:
       on-profile: local
 --- #live
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:tcp://localhost/~/jayeon_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  config:
+    activate:
+      on-profile: live

@@ -3,10 +3,7 @@ package com.juno.jayeon.service;
 import com.google.gson.*;
 import com.juno.jayeon.domain.dto.*;
 import com.juno.jayeon.domain.entity.*;
-import com.juno.jayeon.repository.ItemOptionRepository;
-import com.juno.jayeon.repository.ItemRepository;
-import com.juno.jayeon.repository.OrderItemRepository;
-import com.juno.jayeon.repository.OrderRepository;
+import com.juno.jayeon.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -25,72 +22,12 @@ public class OrderServiceImpl implements OrderService{
     private final OrderItemRepository orderItemRepository;
     private final ItemRepository itemRepository;
     private final ItemOptionRepository itemOptionRepository;
+    private final OrderRepositoryCustom orderRepositoryCustom;
 
     @Override
     public List<GetOrderDto> findAll() throws Exception {
         List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC, "idx"));
-        List<GetOrderDto> ordersList = new ArrayList<>();
-
-        for (Order order : orders) {
-            List<OrderItem> itemList = order.getItemList();
-            List<GetOrderItemDto> orderItemList = new ArrayList<>();
-            Long price = 0L;
-
-            for (OrderItem orderItem : itemList) {
-
-                Optional<Item> itemOptional = itemRepository.findById(orderItem.getItem());
-                Item item = itemOptional.get();
-                String itemName = item.getName();
-                long itemPrice = item.getPrice();
-
-                Optional<ItemOption> itemOptionOptional = itemOptionRepository.findById(orderItem.getOption());
-                ItemOption itemOption = itemOptionOptional.get();
-                String optionName = itemOption.getName();
-                int kg = itemOption.getKg();
-                long optionPrice = itemOption.getPrice();
-                long ea = orderItem.getEa();
-                price += (itemPrice*ea) + (optionPrice*ea);
-                long itemOptionPrice = itemPrice + optionPrice;
-
-                GetOrderItemDto goid = GetOrderItemDto.builder()
-                        .idx(orderItem.getIdx())
-                        .item(itemName)
-                        .option(optionName)
-                        .kg(kg)
-                        .ea((int)ea)
-                        .price(itemOptionPrice)
-                        .build();
-                orderItemList.add(goid);
-            }
-
-            LocalDateTime parse = LocalDateTime.parse(order.getRegDate());
-            String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            OrderStatus status = order.getStatus();
-
-            GetOrderDto god = GetOrderDto.builder()
-                    .idx(order.getIdx())
-                    .buyer(order.getBuyer())
-                    .buyerTel1(order.getBuyerTel1())
-                    .buyerTel2(order.getBuyerTel2())
-                    .buyerTel3(order.getBuyerTel3())
-                    .itemList(orderItemList)
-                    .recipient(order.getRecipient())
-                    .recipientTel1(order.getRecipientTel1())
-                    .recipientTel2(order.getRecipientTel2())
-                    .recipientTel3(order.getRecipientTel3())
-                    .post1(order.getPost1())
-                    .post2(order.getPost2())
-                    .post3(order.getPost3())
-                    .request(order.getRequest())
-                    .status(status)
-                    .regDate(regDate)
-                    .price(price)
-                    .build();
-
-            ordersList.add(god);
-        }
-
-        return ordersList;
+        return getGetOrderDto(orders);
     }
 
     @Override
@@ -174,5 +111,76 @@ public class OrderServiceImpl implements OrderService{
         OrderResponseDto orderResponseDto = new OrderResponseDto();
         orderResponseDto.setOrder_idx(idx);
         return orderResponseDto;
+    }
+
+    @Override
+    public List<GetOrderDto> search(SearchDto searchDto) throws Exception {
+        List<Order> orders = orderRepositoryCustom.search(searchDto);
+        return getGetOrderDto(orders);
+    }
+
+    private List<GetOrderDto> getGetOrderDto(List<Order> orders) {
+        List<GetOrderDto> ordersList = new ArrayList<>();
+
+        for (Order order : orders) {
+            List<OrderItem> itemList = order.getItemList();
+            List<GetOrderItemDto> orderItemList = new ArrayList<>();
+            Long price = 0L;
+
+            for (OrderItem orderItem : itemList) {
+
+                Optional<Item> itemOptional = itemRepository.findById(orderItem.getItem());
+                Item item = itemOptional.get();
+                String itemName = item.getName();
+                long itemPrice = item.getPrice();
+
+                Optional<ItemOption> itemOptionOptional = itemOptionRepository.findById(orderItem.getOption());
+                ItemOption itemOption = itemOptionOptional.get();
+                String optionName = itemOption.getName();
+                int kg = itemOption.getKg();
+                long optionPrice = itemOption.getPrice();
+                long ea = orderItem.getEa();
+                price += (itemPrice*ea) + (optionPrice*ea);
+                long itemOptionPrice = itemPrice + optionPrice;
+
+                GetOrderItemDto goid = GetOrderItemDto.builder()
+                        .idx(orderItem.getIdx())
+                        .item(itemName)
+                        .option(optionName)
+                        .kg(kg)
+                        .ea((int)ea)
+                        .price(itemOptionPrice)
+                        .build();
+                orderItemList.add(goid);
+            }
+
+            LocalDateTime parse = LocalDateTime.parse(order.getRegDate());
+            String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            OrderStatus status = order.getStatus();
+
+            GetOrderDto god = GetOrderDto.builder()
+                    .idx(order.getIdx())
+                    .buyer(order.getBuyer())
+                    .buyerTel1(order.getBuyerTel1())
+                    .buyerTel2(order.getBuyerTel2())
+                    .buyerTel3(order.getBuyerTel3())
+                    .itemList(orderItemList)
+                    .recipient(order.getRecipient())
+                    .recipientTel1(order.getRecipientTel1())
+                    .recipientTel2(order.getRecipientTel2())
+                    .recipientTel3(order.getRecipientTel3())
+                    .post1(order.getPost1())
+                    .post2(order.getPost2())
+                    .post3(order.getPost3())
+                    .request(order.getRequest())
+                    .status(status)
+                    .regDate(regDate)
+                    .price(price)
+                    .build();
+
+            ordersList.add(god);
+        }
+
+        return ordersList;
     }
 }
