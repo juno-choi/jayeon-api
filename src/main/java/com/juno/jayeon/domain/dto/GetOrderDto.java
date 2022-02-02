@@ -1,5 +1,6 @@
 package com.juno.jayeon.domain.dto;
 
+import com.juno.jayeon.domain.entity.OrderStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,27 +14,33 @@ public class GetOrderDto {
     private List<GetOrderItemDto> itemList;
 
     private String buyer;
+    private String buyerTel1;
+    private String buyerTel2;
+    private String buyerTel3;
     private String recipient;
-    private String tel1;
-    private String tel2;
-    private String tel3;
+    private String recipientTel1;
+    private String recipientTel2;
+    private String recipientTel3;
     private String post1;
     private String post2;
     private String post3;
     private String request;
-    private String status;
+    private OrderStatus status;
     private String regDate;
     private Long price;
 
     @Builder
-    public GetOrderDto(Long idx, List<GetOrderItemDto> itemList, String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, String status, String regDate, Long price) {
+    public GetOrderDto(Long idx, List<GetOrderItemDto> itemList, String buyer, String buyerTel1, String buyerTel2, String buyerTel3, String recipient, String recipientTel1, String recipientTel2, String recipientTel3, String post1, String post2, String post3, String request, OrderStatus status, String regDate, Long price) {
         this.idx = idx;
         this.itemList = itemList;
         this.buyer = buyer;
+        this.buyerTel1 = buyerTel1;
+        this.buyerTel2 = buyerTel2;
+        this.buyerTel3 = buyerTel3;
         this.recipient = recipient;
-        this.tel1 = tel1;
-        this.tel2 = tel2;
-        this.tel3 = tel3;
+        this.recipientTel1 = recipientTel1;
+        this.recipientTel2 = recipientTel2;
+        this.recipientTel3 = recipientTel3;
         this.post1 = post1;
         this.post2 = post2;
         this.post3 = post3;

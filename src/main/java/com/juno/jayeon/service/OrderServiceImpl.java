@@ -1,18 +1,9 @@
 package com.juno.jayeon.service;
 
 import com.google.gson.*;
-import com.juno.jayeon.domain.dto.GetOrderDto;
-import com.juno.jayeon.domain.dto.GetOrderItemDto;
-import com.juno.jayeon.domain.dto.OrderDto;
-import com.juno.jayeon.domain.dto.OrderResponseDto;
-import com.juno.jayeon.domain.entity.Item;
-import com.juno.jayeon.domain.entity.ItemOption;
-import com.juno.jayeon.domain.entity.Order;
-import com.juno.jayeon.domain.entity.OrderItem;
-import com.juno.jayeon.repository.ItemOptionRepository;
-import com.juno.jayeon.repository.ItemRepository;
-import com.juno.jayeon.repository.OrderItemRepository;
-import com.juno.jayeon.repository.OrderRepository;
+import com.juno.jayeon.domain.dto.*;
+import com.juno.jayeon.domain.entity.*;
+import com.juno.jayeon.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -31,10 +22,104 @@ public class OrderServiceImpl implements OrderService{
     private final OrderItemRepository orderItemRepository;
     private final ItemRepository itemRepository;
     private final ItemOptionRepository itemOptionRepository;
+    private final OrderRepositoryCustom orderRepositoryCustom;
 
     @Override
     public List<GetOrderDto> findAll() throws Exception {
         List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC, "idx"));
+        return getGetOrderDto(orders);
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDto save(OrderDto orderDto) throws Exception {
+        JsonParser parser = new JsonParser();
+        String jsonStr = orderDto.getOrder();
+        JsonElement parse = parser.parse(jsonStr);
+        JsonArray jsonArray = parse.getAsJsonArray();
+
+        Order order = Order.builder()
+                .buyer(orderDto.getBuyer())
+                .buyerTel1(orderDto.getBuyerTel1())
+                .buyerTel2(orderDto.getBuyerTel2())
+                .buyerTel3(orderDto.getBuyerTel3())
+                .recipient(orderDto.getRecipient())
+                .recipientTel1(orderDto.getRecipientTel1())
+                .recipientTel2(orderDto.getRecipientTel2())
+                .recipientTel3(orderDto.getRecipientTel3())
+                .post1(orderDto.getPost1())
+                .post2(orderDto.getPost2())
+                .post3(orderDto.getPost3())
+                .request(orderDto.getRequest())
+                .status(OrderStatus.BEFORE)
+                .regDate(LocalDateTime.now().toString())
+                .build();
+        Long orderIdx = order.getIdx();
+
+        orderRepository.save(order);
+
+        for (JsonElement jsonElement : jsonArray) {
+            Map<String, Object> map = new HashMap<>();
+            Gson gson = new Gson();
+            map = gson.fromJson(jsonElement, map.getClass());
+            System.out.println("map = " + map.toString());
+            System.out.println("item idx = " + map.get("item"));
+
+            String item = map.get("item").toString();
+            String option = map.get("option").toString();
+            int ea = Integer.valueOf(map.get("ea").toString());
+
+            OrderItem orderItem = OrderItem.builder()
+                .item(Long.valueOf(item))
+                .option(Long.valueOf(option))
+                .ea(ea)
+                .order(order)
+                .build();
+
+            orderItemRepository.save(orderItem);
+        }
+
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setOrder_idx(orderIdx);  //주문번호 반환
+        return orderResponseDto;
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDto update(OrderDto orderDto) throws Exception{
+        OrderResponseDto ord = new OrderResponseDto();
+        long idx = orderDto.getIdx();
+        OrderStatus orderStatus = orderDto.getOrderStatus();
+        OrderStatus afterOrderStatus = null;
+        if(orderStatus == OrderStatus.BEFORE){
+            afterOrderStatus = OrderStatus.DEPOSIT;
+        }else if(orderStatus == OrderStatus.DEPOSIT){
+            afterOrderStatus = OrderStatus.COMPLETE;
+        }
+
+        Order order = orderRepository.findById(idx).get();
+        order.changeStatus(afterOrderStatus);
+
+        ord.setOrder_idx(idx);
+        return ord;
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDto delete(Long idx) throws Exception{
+        orderRepository.deleteById(idx);
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setOrder_idx(idx);
+        return orderResponseDto;
+    }
+
+    @Override
+    public List<GetOrderDto> search(SearchDto searchDto) throws Exception {
+        List<Order> orders = orderRepositoryCustom.search(searchDto);
+        return getGetOrderDto(orders);
+    }
+
+    private List<GetOrderDto> getGetOrderDto(List<Order> orders) {
         List<GetOrderDto> ordersList = new ArrayList<>();
 
         for (Order order : orders) {
@@ -70,21 +155,20 @@ public class OrderServiceImpl implements OrderService{
             }
 
             LocalDateTime parse = LocalDateTime.parse(order.getRegDate());
-            String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            Map<String, Object> map = new HashMap<>();
-            map.put("100", "입금전");
-            map.put("200", "입금확인");
-            map.put("300", "배송출발");
-            map.put("900", "배송완료");
-            String status = map.get(order.getStatus()).toString();
+            String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            OrderStatus status = order.getStatus();
+
             GetOrderDto god = GetOrderDto.builder()
                     .idx(order.getIdx())
                     .buyer(order.getBuyer())
-                    .recipient(order.getRecipient())
+                    .buyerTel1(order.getBuyerTel1())
+                    .buyerTel2(order.getBuyerTel2())
+                    .buyerTel3(order.getBuyerTel3())
                     .itemList(orderItemList)
-                    .tel1(order.getTel1())
-                    .tel2(order.getTel2())
-                    .tel3(order.getTel3())
+                    .recipient(order.getRecipient())
+                    .recipientTel1(order.getRecipientTel1())
+                    .recipientTel2(order.getRecipientTel2())
+                    .recipientTel3(order.getRecipientTel3())
                     .post1(order.getPost1())
                     .post2(order.getPost2())
                     .post3(order.getPost3())
@@ -98,56 +182,5 @@ public class OrderServiceImpl implements OrderService{
         }
 
         return ordersList;
-    }
-
-    @Override
-    @Transactional
-    public OrderResponseDto save(OrderDto orderDto) throws Exception {
-        JsonParser parser = new JsonParser();
-        String jsonStr = orderDto.getOrder();
-        JsonElement parse = parser.parse(jsonStr);
-        JsonArray jsonArray = parse.getAsJsonArray();
-
-        Order order = Order.builder()
-                .buyer(orderDto.getBuyer())
-                .recipient(orderDto.getRecipient())
-                .tel1(orderDto.getTel1())
-                .tel2(orderDto.getTel2())
-                .tel3(orderDto.getTel3())
-                .post1(orderDto.getPost1())
-                .post2(orderDto.getPost2())
-                .post3(orderDto.getPost3())
-                .request(orderDto.getRequest())
-                .status("100")
-                .regDate(LocalDateTime.now().toString())
-                .build();
-        Long orderIdx = order.getIdx();
-
-        orderRepository.save(order);
-
-        for (JsonElement jsonElement : jsonArray) {
-            Map<String, Object> map = new HashMap<>();
-            Gson gson = new Gson();
-            map = gson.fromJson(jsonElement, map.getClass());
-            System.out.println("map = " + map.toString());
-            System.out.println("item idx = " + map.get("item"));
-
-            String item = map.get("item").toString();
-            String option = map.get("option").toString();
-            int ea = Integer.valueOf(map.get("ea").toString());
-
-            OrderItem orderItem = OrderItem.builder()
-                .item(Long.valueOf(item))
-                .option(Long.valueOf(option))
-                .ea(ea)
-                .order(order)
-                .build();
-
-            orderItemRepository.save(orderItem);
-        }
-
-        OrderResponseDto orderResponseDto = new OrderResponseDto();
-        orderResponseDto.setOrder_idx(orderIdx);  //주문번호 반환
-        return orderResponseDto;
     }
 }
