@@ -1,5 +1,6 @@
 package com.juno.jayeon.domain.dto;
 
+import com.juno.jayeon.domain.entity.OrderStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,12 +22,12 @@ public class GetOrderDto {
     private String post2;
     private String post3;
     private String request;
-    private String status;
+    private OrderStatus status;
     private String regDate;
     private Long price;
 
     @Builder
-    public GetOrderDto(Long idx, List<GetOrderItemDto> itemList, String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, String status, String regDate, Long price) {
+    public GetOrderDto(Long idx, List<GetOrderItemDto> itemList, String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, OrderStatus status, String regDate, Long price) {
         this.idx = idx;
         this.itemList = itemList;
         this.buyer = buyer;

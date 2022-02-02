@@ -3,6 +3,7 @@ package com.juno.jayeon.controller;
 import com.juno.jayeon.domain.dto.GetOrderDto;
 import com.juno.jayeon.domain.dto.OrderDto;
 import com.juno.jayeon.domain.dto.OrderResponseDto;
+import com.juno.jayeon.domain.dto.PutOrderDto;
 import com.juno.jayeon.domain.dto.api.CommonV1;
 import com.juno.jayeon.domain.entity.Order;
 import com.juno.jayeon.service.OrderService;
@@ -30,6 +31,13 @@ public class OrderController {
     public ResponseEntity<CommonV1> getOrders() throws Exception{
         List<GetOrderDto> orders = orderService.findAll();
         CommonV1 body = new CommonV1("200", "정상", orders);
+        return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/status")
+    public ResponseEntity<CommonV1> putOrdersStatus(@RequestBody PutOrderDto putOrderDto) throws Exception{
+        OrderResponseDto update = orderService.update(putOrderDto);
+        CommonV1 body = new CommonV1("200", "정상", update);
         return ResponseEntity.ok(body);
     }
 }

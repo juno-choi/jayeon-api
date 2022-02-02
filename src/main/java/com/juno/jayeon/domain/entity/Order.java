@@ -32,13 +32,13 @@ public class Order {
     private String post1;
     private String post2;
     private String post3;
-    private String status;
+    private OrderStatus status;
     private String request;
     @Column(name = "reg_date")
     private String regDate;
 
     @Builder
-    public Order(String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, String status, String regDate) {
+    public Order(String buyer, String recipient, String tel1, String tel2, String tel3, String post1, String post2, String post3, String request, OrderStatus status, String regDate) {
         this.buyer = buyer;
         this.recipient = recipient;
         this.tel1 = tel1;
@@ -50,5 +50,10 @@ public class Order {
         this.request = request;
         this.status = status;
         this.regDate = regDate;
+    }
+
+    public Order changeStatus(OrderStatus status){
+        this.status = status;
+        return this;
     }
 }

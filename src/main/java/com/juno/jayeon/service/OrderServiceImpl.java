@@ -1,14 +1,8 @@
 package com.juno.jayeon.service;
 
 import com.google.gson.*;
-import com.juno.jayeon.domain.dto.GetOrderDto;
-import com.juno.jayeon.domain.dto.GetOrderItemDto;
-import com.juno.jayeon.domain.dto.OrderDto;
-import com.juno.jayeon.domain.dto.OrderResponseDto;
-import com.juno.jayeon.domain.entity.Item;
-import com.juno.jayeon.domain.entity.ItemOption;
-import com.juno.jayeon.domain.entity.Order;
-import com.juno.jayeon.domain.entity.OrderItem;
+import com.juno.jayeon.domain.dto.*;
+import com.juno.jayeon.domain.entity.*;
 import com.juno.jayeon.repository.ItemOptionRepository;
 import com.juno.jayeon.repository.ItemRepository;
 import com.juno.jayeon.repository.OrderItemRepository;
@@ -71,12 +65,8 @@ public class OrderServiceImpl implements OrderService{
 
             LocalDateTime parse = LocalDateTime.parse(order.getRegDate());
             String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            Map<String, Object> map = new HashMap<>();
-            map.put("100", "입금전");
-            map.put("200", "입금확인");
-            map.put("300", "배송출발");
-            map.put("900", "배송완료");
-            String status = map.get(order.getStatus()).toString();
+            OrderStatus status = order.getStatus();
+
             GetOrderDto god = GetOrderDto.builder()
                     .idx(order.getIdx())
                     .buyer(order.getBuyer())
@@ -118,7 +108,7 @@ public class OrderServiceImpl implements OrderService{
                 .post2(orderDto.getPost2())
                 .post3(orderDto.getPost3())
                 .request(orderDto.getRequest())
-                .status("100")
+                .status(OrderStatus.BEFORE)
                 .regDate(LocalDateTime.now().toString())
                 .build();
         Long orderIdx = order.getIdx();
@@ -149,5 +139,25 @@ public class OrderServiceImpl implements OrderService{
         OrderResponseDto orderResponseDto = new OrderResponseDto();
         orderResponseDto.setOrder_idx(orderIdx);  //주문번호 반환
         return orderResponseDto;
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDto update(PutOrderDto putOrderDto) throws Exception{
+        OrderResponseDto ord = new OrderResponseDto();
+        long idx = putOrderDto.getIdx();
+        OrderStatus orderStatus = putOrderDto.getOrderStatus();
+        OrderStatus afterOrderStatus = null;
+        if(orderStatus == OrderStatus.BEFORE){
+            afterOrderStatus = OrderStatus.DEPOSIT;
+        }else if(orderStatus == OrderStatus.DEPOSIT){
+            afterOrderStatus = OrderStatus.COMPLETE;
+        }
+
+        Order order = orderRepository.findById(idx).get();
+        order.changeStatus(afterOrderStatus);
+
+        ord.setOrder_idx(idx);
+        return ord;
     }
 }
