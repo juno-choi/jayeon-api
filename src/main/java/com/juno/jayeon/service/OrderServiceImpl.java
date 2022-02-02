@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService{
             }
 
             LocalDateTime parse = LocalDateTime.parse(order.getRegDate());
-            String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String regDate = parse.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             OrderStatus status = order.getStatus();
 
             GetOrderDto god = GetOrderDto.builder()
