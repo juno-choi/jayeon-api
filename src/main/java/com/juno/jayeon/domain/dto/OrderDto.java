@@ -14,8 +14,13 @@ public class OrderDto {
     
     //주문자 정보
     private String buyer;
+    private String buyerTel1;
+    private String buyerTel2;
+    private String buyerTel3;
     private String recipient;
-    private String tel1;
+    private String recipientTel1;
+    private String recipientTel2;
+    private String recipientTel3;
     private String tel2;
     private String tel3;
     private String post1;
