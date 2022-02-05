@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	// Rest Docs (1) asciidoctor 추가
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.juno'
@@ -20,7 +22,6 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -34,15 +35,59 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa'
 	// Querydsl JPAAnnotationProcessor 사용 지정
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
-	// java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+	// Querydsl java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-	// java.lang.NoClassDefFoundError(javax.annotation.Generated) 발생 대응
+	// Querydsl java.lang.NoClassDefFoundError(javax.annotation.Generated) 발생 대응
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	// Rest Docs (2) mockMvc에서 restdocs를 사용할 수 있도록 추가
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+// Rest Docs (3) 빌드시 snippets 파일들이 저장될 저장소
+ext {
+	snippetsDir = file('build/generated-snippets')
 }
+
+// Rest Docs (4) test 실행 시 파일을 (3)에서 설정한 저장소에 출력하도록 설정
+test {
+	useJUnitPlatform()
+	outputs.dir snippetsDir
+}
+
+// Rest Docs (5) asccidoctor 설정
+asciidoctor {
+	dependsOn test
+	inputs.dir snippetsDir
+}
+
+// Rest Docs (6) asciidoctor가 실행될 때 docs 하위 파일 삭제
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+// Rest Docs (7) bootJar 시 asciidoctor 종속되고 build하위 스니펫츠 파일을 classes 하위로 복사
+bootJar {
+	dependsOn asciidoctor
+	copy {
+		from "${asciidoctor.outputDir}"
+		into 'BOOT-INF/classes/static/docs'
+	}
+}
+
+// Rest Docs (8) from의 파일을 into로 복사
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
+// Rest Docs (9) build 시 copyDocument 실행
+build {
+	dependsOn copyDocument
+}
+
+/*
 clean {
 	delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성 위치
 }
+*/
