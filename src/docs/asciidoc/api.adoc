@@ -1,0 +1,26 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= JAYEON API
+:toc: left
+:toclevels: 4
+:toc-title: eats api
+
+== API TEST
+
+=== REQUEST
+
+include::{snippets}/test/http-request.adoc[]
+
+=== REQEUST FIELD
+
+//include::{snippets}/test/request-fields.adoc[]
+
+=== RESPONSE
+
+include::{snippets}/test/http-response.adoc[]
+
+=== RESPONSE FIELD
+
+include::{snippets}/test/response-fields.adoc[]
