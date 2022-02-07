@@ -5,22 +5,24 @@ endif::[]
 = JAYEON API
 :toc: left
 :toclevels: 4
-:toc-title: eats api
+:toc-title: Jayeon api
 
-== API TEST
+== Order API
 
-=== REQUEST
+=== Search
 
-include::{snippets}/test/http-request.adoc[]
+==== REQUEST
 
-=== REQEUST FIELD
+include::{snippets}/orderSearch/http-request.adoc[]
 
-//include::{snippets}/test/request-fields.adoc[]
+==== REQEUST FIELD
 
-=== RESPONSE
+include::{snippets}/orderSearch/request-parameters.adoc[]
 
-include::{snippets}/test/http-response.adoc[]
+==== RESPONSE
 
-=== RESPONSE FIELD
+include::{snippets}/orderSearch/http-response.adoc[]
 
-include::{snippets}/test/response-fields.adoc[]
+==== RESPONSE FIELD
+
+include::{snippets}/orderSearch/response-fields.adoc[]
