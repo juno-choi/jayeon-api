@@ -8,6 +8,8 @@ import com.juno.jayeon.domain.dto.api.CommonV1;
 import com.juno.jayeon.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +21,27 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("")
-    public ResponseEntity<CommonV1> putOrders(@RequestBody OrderDto orderDto) throws Exception{
-        OrderResponseDto ord = orderService.save(orderDto);
-        CommonV1 body = new CommonV1("200", "정상", ord);
-        return ResponseEntity.ok().body(body);
-    }
-
-    @GetMapping("")
+    /*@GetMapping("")
     public ResponseEntity<CommonV1> getOrders() throws Exception{
         List<GetOrderDto> orders = orderService.findAll();
         CommonV1 body = new CommonV1("200", "정상", orders);
         return ResponseEntity.ok(body);
+    }*/
+
+    @GetMapping("/search")
+    public ResponseEntity<CommonV1> searchOrder(SearchDto searchDto) throws Exception{
+        List<GetOrderDto> search = orderService.search(searchDto);
+        CommonV1 body = new CommonV1("200", "정상", search);
+        return ResponseEntity.ok(body);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<CommonV1> putOrders(@RequestBody OrderDto orderDto) throws Exception{
+
+
+        OrderResponseDto ord = orderService.save(orderDto);
+        CommonV1 body = new CommonV1("200", "정상", ord);
+        return ResponseEntity.ok().body(body);
     }
 
     @PutMapping("/status")
@@ -47,10 +58,4 @@ public class OrderController {
         return ResponseEntity.ok(body);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<CommonV1> searchOrder(SearchDto searchDto) throws Exception{
-        List<GetOrderDto> search = orderService.search(searchDto);
-        CommonV1 body = new CommonV1("200", "정상", search);
-        return ResponseEntity.ok(body);
-    }
 }
