@@ -7,9 +7,13 @@ endif::[]
 :toclevels: 4
 :toc-title: Jayeon api
 
+---
+
 == Order API
 
-=== Search
+---
+
+=== 주문 검색
 
 ==== REQUEST
 
@@ -26,3 +30,23 @@ include::{snippets}/orderSearch/http-response.adoc[]
 ==== RESPONSE FIELD
 
 include::{snippets}/orderSearch/response-fields.adoc[]
+
+---
+
+=== 주문 등록
+
+==== REQUEST
+
+include::{snippets}/postOrder/http-request.adoc[]
+
+==== REQEUST FIELD
+
+include::{snippets}/postOrder/request-fields.adoc[]
+
+==== RESPONSE
+
+include::{snippets}/postOrder/http-response.adoc[]
+
+==== RESPONSE FIELD
+
+include::{snippets}/postOrder/response-fields.adoc[]

@@ -36,22 +36,20 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public ResponseEntity<CommonV1> putOrders(@RequestBody OrderDto orderDto) throws Exception{
-
-
+    public ResponseEntity<CommonV1> postOrders(@RequestBody OrderDto orderDto) throws Exception{
         OrderResponseDto ord = orderService.save(orderDto);
         CommonV1 body = new CommonV1("200", "정상", ord);
         return ResponseEntity.ok().body(body);
     }
 
-    @PutMapping("/status")
-    public ResponseEntity<CommonV1> putOrdersStatus(@RequestBody OrderDto orderDto) throws Exception{
+    @PatchMapping("/status")
+    public ResponseEntity<CommonV1> patchOrdersStatus(@RequestBody OrderDto orderDto) throws Exception{
         OrderResponseDto update = orderService.update(orderDto);
         CommonV1 body = new CommonV1("200", "정상", update);
         return ResponseEntity.ok(body);
     }
 
-    @DeleteMapping("/{idx}")
+    @DeleteMapping("/delete/{idx}")
     public ResponseEntity<CommonV1> deleteOrder(@PathVariable(value = "idx") Long idx) throws Exception{
         OrderResponseDto delete = orderService.delete(idx);
         CommonV1 body = new CommonV1("200", "정상", delete);
