@@ -1,5 +1,6 @@
 package com.juno.jayeon.controller;
 
+import com.google.gson.Gson;
 import com.juno.jayeon.domain.entity.Order;
 import com.juno.jayeon.domain.entity.OrderStatus;
 import com.juno.jayeon.repository.OrderRepository;
@@ -19,6 +20,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -44,7 +47,7 @@ class OrderControllerTest {
     @Test
     @Transactional
     @DisplayName("order 검색")
-    void testGetSearchOrders() throws Exception{
+    void 주문_검색() throws Exception{
         //given
         LocalDateTime day = LocalDateTime.of(2022,1,1,12,0,0);
         Order order = Order.builder()
@@ -115,4 +118,62 @@ class OrderControllerTest {
         ));
     }
 
+    @Test
+    @Transactional
+    @DisplayName("주문 Test")
+    void 주문() throws Exception{
+        //given
+        Map<String, String> map = new HashMap<>();
+        map.put("order", "[{\"item\" : \"1\", \"option\" : \"1\", \"ea\" : \"1\"}, {\"item\" : \"2\", \"option\" : \"2\", \"ea\" : \"2\"}]");
+        map.put("buyer", "구매자");
+        map.put("orderStatus","BEFORE");
+        map.put("buyerTel1","010");
+        map.put("buyerTel2","1111");
+        map.put("buyerTel3","2222");
+        map.put("recipient","수령자");
+        map.put("recipientTel1","010");
+        map.put("recipientTel2","3333");
+        map.put("recipientTel3","4444");
+        map.put("post1","1234");
+        map.put("post2","주소");
+        map.put("post3","상세 주소");
+        map.put("request","테스트 입니다.");
+
+        Gson gson = new Gson();
+        String body = gson.toJson(map);
+
+        //when
+        ResultActions action = mock.perform(MockMvcRequestBuilders.post(API_URL + "/v1/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body));
+        //then
+        action.andExpect(MockMvcResultMatchers.status().isOk());
+        action.andExpect(MockMvcResultMatchers.jsonPath("$.data.orderIdx").isNotEmpty());
+        //docs
+        action.andDo(document("postOrder",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("order").type(JsonFieldType.STRING).description("주문 상품의 정보"),
+                    fieldWithPath("buyer").type(JsonFieldType.STRING).description("구매자"),
+                    fieldWithPath("orderStatus").type(JsonFieldType.STRING).description("주문의 결제 상태"),
+                    fieldWithPath("buyerTel1").type(JsonFieldType.STRING).description("구매자 연락처 1"),
+                    fieldWithPath("buyerTel2").type(JsonFieldType.STRING).description("구매자 연락처 2"),
+                    fieldWithPath("buyerTel3").type(JsonFieldType.STRING).description("구매자 연락처 3"),
+                    fieldWithPath("recipient").type(JsonFieldType.STRING).description("수령자"),
+                    fieldWithPath("recipientTel1").type(JsonFieldType.STRING).description("수령자 연락처 1"),
+                    fieldWithPath("recipientTel2").type(JsonFieldType.STRING).description("수령자 연락처 2"),
+                    fieldWithPath("recipientTel3").type(JsonFieldType.STRING).description("수령자 연락처 3"),
+                    fieldWithPath("post1").type(JsonFieldType.STRING).description("수령지 주소 1"),
+                    fieldWithPath("post2").type(JsonFieldType.STRING).description("수령지 주소 2"),
+                    fieldWithPath("post3").type(JsonFieldType.STRING).description("수령지 상세 주소"),
+                    fieldWithPath("request").type(JsonFieldType.STRING).description("주문 요청 사항")
+                ),
+                responseFields(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("msg").type(JsonFieldType.STRING).description("메세지"),
+                        fieldWithPath("data.orderIdx").type(JsonFieldType.NUMBER).description("등록된 주문의 번호")
+                )
+        ));
+    }
 }

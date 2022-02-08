@@ -21,8 +21,6 @@ public class OrderDto {
     private String recipientTel1;
     private String recipientTel2;
     private String recipientTel3;
-    private String tel2;
-    private String tel3;
     private String post1;
     private String post2;
     private String post3;

@@ -54,9 +54,9 @@ public class OrderServiceImpl implements OrderService{
                 .status(OrderStatus.BEFORE)
                 .regDate(LocalDateTime.now().toString())
                 .build();
-        Long orderIdx = order.getIdx();
 
-        orderRepository.save(order);
+        Order save = orderRepository.save(order);
+        Long orderIdx = save.getIdx();
 
         for (JsonElement jsonElement : jsonArray) {
             Map<String, Object> map = new HashMap<>();
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService{
         }
 
         OrderResponseDto orderResponseDto = new OrderResponseDto();
-        orderResponseDto.setOrder_idx(orderIdx);  //주문번호 반환
+        orderResponseDto.setOrderIdx(orderIdx);  //주문번호 반환
         return orderResponseDto;
     }
 
@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService{
         Order order = orderRepository.findById(idx).get();
         order.changeStatus(afterOrderStatus);
 
-        ord.setOrder_idx(idx);
+        ord.setOrderIdx(idx);
         return ord;
     }
 
@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService{
     public OrderResponseDto delete(Long idx) throws Exception{
         orderRepository.deleteById(idx);
         OrderResponseDto orderResponseDto = new OrderResponseDto();
-        orderResponseDto.setOrder_idx(idx);
+        orderResponseDto.setOrderIdx(idx);
         return orderResponseDto;
     }
 
