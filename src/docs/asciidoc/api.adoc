@@ -15,58 +15,78 @@ endif::[]
 
 === 주문 검색
 
-==== REQUEST
-
-include::{snippets}/order_search/http-request.adoc[]
-
 ==== REQEUST FIELD
 
 include::{snippets}/order_search/request-parameters.adoc[]
 
-==== RESPONSE
+==== REQUEST
 
-include::{snippets}/order_search/http-response.adoc[]
+include::{snippets}/order_search/http-request.adoc[]
 
 ==== RESPONSE FIELD
 
 include::{snippets}/order_search/response-fields.adoc[]
 
+==== RESPONSE
+
+include::{snippets}/order_search/http-response.adoc[]
+
 ---
 
 === 주문 등록
-
-==== REQUEST
-
-include::{snippets}/post_order/http-request.adoc[]
 
 ==== REQEUST FIELD
 
 include::{snippets}/post_order/request-fields.adoc[]
 
-==== RESPONSE
+==== REQUEST
 
-include::{snippets}/post_order/http-response.adoc[]
+include::{snippets}/post_order/http-request.adoc[]
 
 ==== RESPONSE FIELD
 
 include::{snippets}/post_order/response-fields.adoc[]
 
+==== RESPONSE
+
+include::{snippets}/post_order/http-response.adoc[]
+
 ---
 
-=== 주문 등록
-
-==== REQUEST
-
-include::{snippets}/order_status/http-request.adoc[]
+=== 주문 상태 변경
 
 ==== REQEUST FIELD
 
 include::{snippets}/order_status/request-fields.adoc[]
 
-==== RESPONSE
+==== REQUEST
 
-include::{snippets}/order_status/http-response.adoc[]
+include::{snippets}/order_status/http-request.adoc[]
 
 ==== RESPONSE FIELD
 
 include::{snippets}/order_status/response-fields.adoc[]
+
+==== RESPONSE
+
+include::{snippets}/order_status/http-response.adoc[]
+
+---
+
+=== 주문 삭제
+
+==== REQEUST FIELD
+
+include::{snippets}/order_delete/path-parameters.adoc[]
+
+==== REQUEST
+
+include::{snippets}/order_delete/http-request.adoc[]
+
+==== RESPONSE FIELD
+
+include::{snippets}/order_delete/response-fields-data.adoc[]
+
+==== RESPONSE
+
+include::{snippets}/order_delete/http-response.adoc[]
