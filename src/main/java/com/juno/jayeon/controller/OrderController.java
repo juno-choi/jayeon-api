@@ -7,6 +7,7 @@ import com.juno.jayeon.domain.dto.SearchDto;
 import com.juno.jayeon.domain.dto.api.CommonV1;
 import com.juno.jayeon.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +40,7 @@ public class OrderController {
     public ResponseEntity<CommonV1> postOrders(@RequestBody OrderDto orderDto) throws Exception{
         OrderResponseDto ord = orderService.save(orderDto);
         CommonV1 body = new CommonV1("200", "정상", ord);
-        return ResponseEntity.ok().body(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     @PatchMapping("/status")

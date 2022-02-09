@@ -33,7 +33,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(uriHost = "jayeonapple.com")
-@Transactional(readOnly = true)
+@Transactional
 class OrderControllerTest {
 
     @Autowired
@@ -45,7 +45,6 @@ class OrderControllerTest {
     private final String API_URL = "http://jayeonapple.com";
 
     @Test
-    @Transactional
     @DisplayName("order 검색")
     void 주문_검색() throws Exception{
         //given
@@ -84,7 +83,7 @@ class OrderControllerTest {
         action.andExpect(MockMvcResultMatchers.jsonPath("$.code").value("200"));
         action.andExpect(MockMvcResultMatchers.jsonPath("$.data.[0].buyer").value("tester"));
         //docs
-        action.andDo(document("orderSearch",
+        action.andDo(document("order_search",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
 
@@ -119,7 +118,6 @@ class OrderControllerTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("주문 Test")
     void 주문() throws Exception{
         //given
@@ -147,10 +145,10 @@ class OrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body));
         //then
-        action.andExpect(MockMvcResultMatchers.status().isOk());
+        action.andExpect(MockMvcResultMatchers.status().is2xxSuccessful()); //201 return
         action.andExpect(MockMvcResultMatchers.jsonPath("$.data.orderIdx").isNotEmpty());
         //docs
-        action.andDo(document("postOrder",
+        action.andDo(document("post_order",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
@@ -173,6 +171,59 @@ class OrderControllerTest {
                         fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                         fieldWithPath("msg").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("data.orderIdx").type(JsonFieldType.NUMBER).description("등록된 주문의 번호")
+                )
+        ));
+    }
+
+    @Test
+    void 주문_상태_변경() throws Exception{
+        //given
+        LocalDateTime day = LocalDateTime.of(2022,1,1,12,0,0);
+        Order order = Order.builder()
+                .buyer("tester")
+                .buyerTel1("010")
+                .buyerTel2("1234")
+                .buyerTel3("5678")
+                .recipient("수령자")
+                .recipientTel1("010")
+                .recipientTel2("1111")
+                .recipientTel3("2222")
+                .status(OrderStatus.BEFORE)
+                .post1("1234")
+                .post2("주소")
+                .post3("상세주소")
+                .regDate(day.toString())
+                .request("테스트입니다.")
+                .build();
+        Order save = orderRepository.save(order);
+
+        long orderIdx = save.getIdx();
+        OrderStatus status = save.getStatus();
+        Map<String, Object> map = new HashMap<>();
+        map.put("idx", orderIdx);
+        map.put("orderStatus", String.valueOf(status));
+
+        Gson gson = new Gson();
+        String body = gson.toJson(map);
+
+        //when
+        ResultActions action = mock.perform(MockMvcRequestBuilders.patch(API_URL + "/v1/orders/status").contentType(MediaType.APPLICATION_JSON).content(body));
+        //then
+        action.andExpect(MockMvcResultMatchers.status().isOk());
+        action.andExpect(MockMvcResultMatchers.jsonPath("$.data.orderIdx").value(orderIdx));
+
+        //docs
+        action.andDo(document("order_status",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("idx").type(JsonFieldType.NUMBER).description("주문 번호"),
+                    fieldWithPath("orderStatus").type(JsonFieldType.STRING).description("변경될 주문 상태")
+                ),
+                responseFields(
+                    fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                    fieldWithPath("msg").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data.orderIdx").type(JsonFieldType.NUMBER).description("변경된 주문 번호")
                 )
         ));
     }

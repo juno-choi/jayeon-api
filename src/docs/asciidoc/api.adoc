@@ -17,19 +17,19 @@ endif::[]
 
 ==== REQUEST
 
-include::{snippets}/orderSearch/http-request.adoc[]
+include::{snippets}/order_search/http-request.adoc[]
 
 ==== REQEUST FIELD
 
-include::{snippets}/orderSearch/request-parameters.adoc[]
+include::{snippets}/order_search/request-parameters.adoc[]
 
 ==== RESPONSE
 
-include::{snippets}/orderSearch/http-response.adoc[]
+include::{snippets}/order_search/http-response.adoc[]
 
 ==== RESPONSE FIELD
 
-include::{snippets}/orderSearch/response-fields.adoc[]
+include::{snippets}/order_search/response-fields.adoc[]
 
 ---
 
@@ -37,16 +37,36 @@ include::{snippets}/orderSearch/response-fields.adoc[]
 
 ==== REQUEST
 
-include::{snippets}/postOrder/http-request.adoc[]
+include::{snippets}/post_order/http-request.adoc[]
 
 ==== REQEUST FIELD
 
-include::{snippets}/postOrder/request-fields.adoc[]
+include::{snippets}/post_order/request-fields.adoc[]
 
 ==== RESPONSE
 
-include::{snippets}/postOrder/http-response.adoc[]
+include::{snippets}/post_order/http-response.adoc[]
 
 ==== RESPONSE FIELD
 
-include::{snippets}/postOrder/response-fields.adoc[]
+include::{snippets}/post_order/response-fields.adoc[]
+
+---
+
+=== 주문 등록
+
+==== REQUEST
+
+include::{snippets}/order_status/http-request.adoc[]
+
+==== REQEUST FIELD
+
+include::{snippets}/order_status/request-fields.adoc[]
+
+==== RESPONSE
+
+include::{snippets}/order_status/http-response.adoc[]
+
+==== RESPONSE FIELD
+
+include::{snippets}/order_status/response-fields.adoc[]
