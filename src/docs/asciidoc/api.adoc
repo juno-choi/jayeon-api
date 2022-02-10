@@ -7,6 +7,27 @@ endif::[]
 :toclevels: 4
 :toc-title: Jayeon api
 
+== 공통 반환 데이터
+
+[cols=3*, options=header]
+|===
+|Path
+|Type
+|Description
+
+|code
+|String
+|결과 코드
+
+|msg
+|String
+|결과 메세지
+
+|data
+|Object
+|결과 데이터
+|===
+
 ---
 
 == Order API
@@ -25,7 +46,7 @@ include::{snippets}/order_search/http-request.adoc[]
 
 ==== RESPONSE FIELD
 
-include::{snippets}/order_search/response-fields.adoc[]
+include::{snippets}/order_search/response-fields-data.adoc[]
 
 ==== RESPONSE
 
@@ -37,19 +58,19 @@ include::{snippets}/order_search/http-response.adoc[]
 
 ==== REQEUST FIELD
 
-include::{snippets}/post_order/request-fields.adoc[]
+include::{snippets}/order_post/request-fields.adoc[]
 
 ==== REQUEST
 
-include::{snippets}/post_order/http-request.adoc[]
+include::{snippets}/order_post/http-request.adoc[]
 
 ==== RESPONSE FIELD
 
-include::{snippets}/post_order/response-fields.adoc[]
+include::{snippets}/order_post/response-fields-data.adoc[]
 
 ==== RESPONSE
 
-include::{snippets}/post_order/http-response.adoc[]
+include::{snippets}/order_post/http-response.adoc[]
 
 ---
 
@@ -65,7 +86,7 @@ include::{snippets}/order_status/http-request.adoc[]
 
 ==== RESPONSE FIELD
 
-include::{snippets}/order_status/response-fields.adoc[]
+include::{snippets}/order_status/response-fields-data.adoc[]
 
 ==== RESPONSE
 
@@ -90,3 +111,21 @@ include::{snippets}/order_delete/response-fields-data.adoc[]
 ==== RESPONSE
 
 include::{snippets}/order_delete/http-response.adoc[]
+
+---
+
+== Item API
+
+=== 상품 불러오기
+
+==== REQUEST
+
+include::{snippets}/item_get/http-request.adoc[]
+
+==== RESPONSE FIELD
+
+include::{snippets}/item_get/response-fields-data.adoc[]
+
+==== RESPONSE
+
+include::{snippets}/item_get/http-response.adoc[]
