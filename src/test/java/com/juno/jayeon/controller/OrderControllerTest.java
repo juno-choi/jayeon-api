@@ -92,25 +92,24 @@ class OrderControllerTest {
                         parameterWithName("orderStatus").description("주문 상태 / "+OrderStatus.BEFORE+", "+OrderStatus.DEPOSIT+", "+OrderStatus.COMPLETE)
                 ),
                 responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("msg").type(JsonFieldType.STRING).description("메세지"),
-                        fieldWithPath("data.[].idx").type(JsonFieldType.NUMBER).description("주문 번호"),
-                        fieldWithPath("data.[].itemList").type(JsonFieldType.ARRAY).description("상품 리스트"),
-                        fieldWithPath("data.[].buyer").type(JsonFieldType.STRING).description("구매자"),
-                        fieldWithPath("data.[].price").type(JsonFieldType.NUMBER).description("구매 가격"),
-                        fieldWithPath("data.[].buyerTel1").type(JsonFieldType.STRING).description("구매자 연락처 1"),
-                        fieldWithPath("data.[].buyerTel2").type(JsonFieldType.STRING).description("구매자 연락처 2"),
-                        fieldWithPath("data.[].buyerTel3").type(JsonFieldType.STRING).description("구매자 연락처 3"),
-                        fieldWithPath("data.[].recipient").type(JsonFieldType.STRING).description("수령자"),
-                        fieldWithPath("data.[].recipientTel1").type(JsonFieldType.STRING).description("수령자 연락처 1"),
-                        fieldWithPath("data.[].recipientTel2").type(JsonFieldType.STRING).description("수령자 연락처 2"),
-                        fieldWithPath("data.[].recipientTel3").type(JsonFieldType.STRING).description("수령자 연락처 3"),
-                        fieldWithPath("data.[].post1").type(JsonFieldType.STRING).description("수령 주소 우편번호"),
-                        fieldWithPath("data.[].post2").type(JsonFieldType.STRING).description("수령 주소"),
-                        fieldWithPath("data.[].post3").type(JsonFieldType.STRING).description("수령 주소 상세 주소"),
-                        fieldWithPath("data.[].request").type(JsonFieldType.STRING).description("구매자 요청사항"),
-                        fieldWithPath("data.[].status").type(JsonFieldType.STRING).description("상품 상태"),
-                        fieldWithPath("data.[].regDate").type(JsonFieldType.STRING).description("구매일")
+                        beneathPath("data").withSubsectionId("data"),
+                        fieldWithPath("idx").type(JsonFieldType.NUMBER).description("주문 번호"),
+                        fieldWithPath("itemList").type(JsonFieldType.ARRAY).description("상품 리스트"),
+                        fieldWithPath("buyer").type(JsonFieldType.STRING).description("구매자"),
+                        fieldWithPath("price").type(JsonFieldType.NUMBER).description("구매 가격"),
+                        fieldWithPath("buyerTel1").type(JsonFieldType.STRING).description("구매자 연락처 1"),
+                        fieldWithPath("buyerTel2").type(JsonFieldType.STRING).description("구매자 연락처 2"),
+                        fieldWithPath("buyerTel3").type(JsonFieldType.STRING).description("구매자 연락처 3"),
+                        fieldWithPath("recipient").type(JsonFieldType.STRING).description("수령자"),
+                        fieldWithPath("recipientTel1").type(JsonFieldType.STRING).description("수령자 연락처 1"),
+                        fieldWithPath("recipientTel2").type(JsonFieldType.STRING).description("수령자 연락처 2"),
+                        fieldWithPath("recipientTel3").type(JsonFieldType.STRING).description("수령자 연락처 3"),
+                        fieldWithPath("post1").type(JsonFieldType.STRING).description("수령 주소 우편번호"),
+                        fieldWithPath("post2").type(JsonFieldType.STRING).description("수령 주소"),
+                        fieldWithPath("post3").type(JsonFieldType.STRING).description("수령 주소 상세 주소"),
+                        fieldWithPath("request").type(JsonFieldType.STRING).description("구매자 요청사항"),
+                        fieldWithPath("status").type(JsonFieldType.STRING).description("상품 상태"),
+                        fieldWithPath("regDate").type(JsonFieldType.STRING).description("구매일")
                 )
         ));
     }
@@ -146,7 +145,7 @@ class OrderControllerTest {
         action.andExpect(MockMvcResultMatchers.status().is2xxSuccessful()); //201 return
         action.andExpect(MockMvcResultMatchers.jsonPath("$.data.orderIdx").isNotEmpty());
         //docs
-        action.andDo(document("post_order",
+        action.andDo(document("order_post",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
@@ -166,9 +165,8 @@ class OrderControllerTest {
                     fieldWithPath("request").type(JsonFieldType.STRING).description("주문 요청 사항")
                 ),
                 responseFields(
-                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                        fieldWithPath("msg").type(JsonFieldType.STRING).description("메세지"),
-                        fieldWithPath("data.orderIdx").type(JsonFieldType.NUMBER).description("등록된 주문의 번호")
+                        beneathPath("data").withSubsectionId("data"),
+                        fieldWithPath("orderIdx").type(JsonFieldType.NUMBER).description("등록된 주문의 번호")
                 )
         ));
     }
@@ -219,9 +217,8 @@ class OrderControllerTest {
                     fieldWithPath("orderStatus").type(JsonFieldType.STRING).description("변경될 주문 상태")
                 ),
                 responseFields(
-                    fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
-                    fieldWithPath("msg").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data.orderIdx").type(JsonFieldType.NUMBER).description("변경된 주문 번호")
+                    beneathPath("data").withSubsectionId("data"),
+                    fieldWithPath("orderIdx").type(JsonFieldType.NUMBER).description("변경된 주문 번호")
                 )
         ));
     }
