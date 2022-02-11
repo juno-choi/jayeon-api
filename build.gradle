@@ -63,7 +63,7 @@ asciidoctor {
 
 // Rest Docs (6) asciidoctor가 실행될 때 docs 하위 파일 삭제
 asciidoctor.doFirst {
-	delete file('src/main/resources/templates/docs')
+	delete file('src/main/resources/static/docs')
 }
 
 // Rest Docs (7) bootJar 시 asciidoctor 종속되고 build하위 스니펫츠 파일을 classes 하위로 복사
@@ -79,7 +79,7 @@ bootJar {
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor
 	from file("build/docs/asciidoc")
-	into file("src/main/resources/templates/docs")
+	into file("src/main/resources/static/docs")
 }
 
 // Rest Docs (9) build 시 copyDocument 실행
