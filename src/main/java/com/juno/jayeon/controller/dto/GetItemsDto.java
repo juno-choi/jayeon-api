@@ -1,6 +1,6 @@
-package com.juno.jayeon.domain.dto;
+package com.juno.jayeon.controller.dto;
 
-import com.juno.jayeon.domain.entity.ItemOption;
+import com.juno.jayeon.service.dto.GetItemOptionDto;
 import lombok.Builder;
 import lombok.Data;
 

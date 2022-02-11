@@ -1,9 +1,13 @@
 package com.juno.jayeon.service;
 
 import com.google.gson.*;
-import com.juno.jayeon.domain.dto.*;
-import com.juno.jayeon.domain.entity.*;
+import com.juno.jayeon.controller.dto.OrderDto;
+import com.juno.jayeon.controller.dto.OrderResponseDto;
+import com.juno.jayeon.controller.dto.SearchDto;
+import com.juno.jayeon.domain.*;
 import com.juno.jayeon.repository.*;
+import com.juno.jayeon.service.dto.GetOrderDto;
+import com.juno.jayeon.service.dto.GetOrderItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

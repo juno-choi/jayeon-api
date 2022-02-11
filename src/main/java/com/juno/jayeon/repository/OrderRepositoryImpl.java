@@ -1,10 +1,8 @@
 package com.juno.jayeon.repository;
 
-import com.juno.jayeon.domain.dto.OrderResponseDto;
-import com.juno.jayeon.domain.dto.SearchDto;
-import com.juno.jayeon.domain.entity.Order;
-import com.juno.jayeon.domain.entity.OrderStatus;
-import com.juno.jayeon.domain.entity.QOrder;
+import com.juno.jayeon.controller.dto.SearchDto;
+import com.juno.jayeon.domain.Order;
+import com.juno.jayeon.domain.QOrder;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

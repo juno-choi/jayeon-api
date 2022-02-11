@@ -1,4 +1,4 @@
-package com.juno.jayeon.domain.dto;
+package com.juno.jayeon.controller.dto;
 
 import lombok.Data;
 

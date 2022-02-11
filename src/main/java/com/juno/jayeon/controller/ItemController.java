@@ -1,7 +1,7 @@
 package com.juno.jayeon.controller;
 
-import com.juno.jayeon.domain.dto.GetItemsDto;
-import com.juno.jayeon.domain.dto.api.CommonV1;
+import com.juno.jayeon.controller.dto.GetItemsDto;
+import com.juno.jayeon.api.CommonV1;
 import com.juno.jayeon.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

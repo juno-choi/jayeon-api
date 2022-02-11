@@ -1,6 +1,6 @@
-package com.juno.jayeon.domain.dto;
+package com.juno.jayeon.controller.dto;
 
-import com.juno.jayeon.domain.entity.OrderStatus;
+import com.juno.jayeon.domain.OrderStatus;
 import lombok.Data;
 
 @Data
