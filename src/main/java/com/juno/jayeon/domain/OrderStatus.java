@@ -1,4 +1,4 @@
-package com.juno.jayeon.domain.entity;
+package com.juno.jayeon.domain;
 
 import lombok.AllArgsConstructor;
 

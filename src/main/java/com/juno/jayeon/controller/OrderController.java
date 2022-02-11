@@ -1,16 +1,14 @@
 package com.juno.jayeon.controller;
 
-import com.juno.jayeon.domain.dto.GetOrderDto;
-import com.juno.jayeon.domain.dto.OrderDto;
-import com.juno.jayeon.domain.dto.OrderResponseDto;
-import com.juno.jayeon.domain.dto.SearchDto;
-import com.juno.jayeon.domain.dto.api.CommonV1;
+import com.juno.jayeon.service.dto.GetOrderDto;
+import com.juno.jayeon.controller.dto.OrderDto;
+import com.juno.jayeon.controller.dto.OrderResponseDto;
+import com.juno.jayeon.controller.dto.SearchDto;
+import com.juno.jayeon.api.CommonV1;
 import com.juno.jayeon.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

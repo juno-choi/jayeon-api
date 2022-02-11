@@ -1,9 +1,9 @@
 package com.juno.jayeon.service;
 
-import com.juno.jayeon.domain.dto.GetOrderDto;
-import com.juno.jayeon.domain.dto.OrderDto;
-import com.juno.jayeon.domain.dto.OrderResponseDto;
-import com.juno.jayeon.domain.dto.SearchDto;
+import com.juno.jayeon.service.dto.GetOrderDto;
+import com.juno.jayeon.controller.dto.OrderDto;
+import com.juno.jayeon.controller.dto.OrderResponseDto;
+import com.juno.jayeon.controller.dto.SearchDto;
 
 import java.util.List;
 

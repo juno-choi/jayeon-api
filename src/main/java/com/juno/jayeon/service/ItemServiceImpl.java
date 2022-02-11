@@ -1,9 +1,9 @@
 package com.juno.jayeon.service;
 
-import com.juno.jayeon.domain.dto.GetItemOptionDto;
-import com.juno.jayeon.domain.dto.GetItemsDto;
-import com.juno.jayeon.domain.entity.Item;
-import com.juno.jayeon.domain.entity.ItemOption;
+import com.juno.jayeon.service.dto.GetItemOptionDto;
+import com.juno.jayeon.controller.dto.GetItemsDto;
+import com.juno.jayeon.domain.Item;
+import com.juno.jayeon.domain.ItemOption;
 import com.juno.jayeon.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

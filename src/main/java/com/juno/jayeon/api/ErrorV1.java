@@ -1,4 +1,4 @@
-package com.juno.jayeon.domain.dto.api;
+package com.juno.jayeon.api;
 
 import lombok.Getter;
 

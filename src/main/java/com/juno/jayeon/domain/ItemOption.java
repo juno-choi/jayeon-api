@@ -1,27 +1,26 @@
-package com.juno.jayeon.domain.entity;
+package com.juno.jayeon.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Item {
+@Entity
+public class ItemOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_idx")
+    @Column(name = "item_option_idx")
     private Long idx;
-
+    private int kg;
     private String name;
 
-    @OneToMany(mappedBy = "item")
-    private List<ItemOption> option = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_idx")
+    private Item item;
+
     private Long price;
 }
