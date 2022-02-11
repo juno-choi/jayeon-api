@@ -2,12 +2,15 @@ package com.juno.jayeon.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,7 +25,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc   //mock test를 위한 설정
-@AutoConfigureRestDocs(uriHost = "jayeonapple.com") //rest docs 설정
+@AutoConfigureRestDocs(uriHost = "api.jayeonapple.com", uriPort = 80) //rest docs 설정
 @Transactional(readOnly = true)
 class ItemControllerTest {
     @Autowired
