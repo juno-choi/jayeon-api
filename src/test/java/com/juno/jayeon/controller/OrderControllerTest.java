@@ -5,13 +5,16 @@ import com.juno.jayeon.domain.entity.Order;
 import com.juno.jayeon.domain.entity.OrderStatus;
 import com.juno.jayeon.repository.OrderRepository;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,7 +35,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureRestDocs(uriHost = "jayeonapple.com")
+@AutoConfigureRestDocs(uriHost = "api.jayeonapple.com", uriPort = 80)
 @Transactional
 class OrderControllerTest {
 
